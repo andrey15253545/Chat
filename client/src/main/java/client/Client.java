@@ -12,7 +12,6 @@ public class Client {
 
     public static void main(String[] ar) {
 
-
         try {
             InetAddress ipAddress = InetAddress.getByName(ADDRESS);
             Socket socket = new Socket(ipAddress, SERVER_PORT);
