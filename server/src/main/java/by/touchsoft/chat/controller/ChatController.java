@@ -42,8 +42,8 @@ public class ChatController {
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> sendMessage(
             @PathVariable("id") String id,
-            @RequestBody MessageDTO dto) {
-        String response = chatService.sendMessage(id, dto.getMessage());
+            @RequestBody MessageDTO messageDTO) {
+        String response = chatService.sendMessage(id, messageDTO.getMessage());
         HttpStatus status = response.matches(".+ : message send$")
                 ? HttpStatus.OK
                 : HttpStatus.NOT_IMPLEMENTED;
@@ -59,9 +59,9 @@ public class ChatController {
     }
 
     @RequestMapping(value = "/{id}/new", method = RequestMethod.GET)
-    public ResponseEntity<String> getNewMessage(
+    public ResponseEntity<List<Message>> getNewMessage(
             @PathVariable("id") String id) {
-        String resp = messageService.get(id);
+        List<Message> resp = messageService.get(id);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
     //TODO : пагинация

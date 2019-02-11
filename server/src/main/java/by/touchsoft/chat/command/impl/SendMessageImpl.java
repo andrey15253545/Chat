@@ -9,7 +9,7 @@ import by.touchsoft.chat.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Key(url = "/msg .+", role = {Role.AGENT, Role.CLIENT})
+@Key(url = "(?!/).+", role = {Role.AGENT, Role.CLIENT})
 @Component
 public class SendMessageImpl implements Command {
 
@@ -22,6 +22,6 @@ public class SendMessageImpl implements Command {
 
     @Override
     public String execute(User user, String arg) {
-        return chatService.sendMessage(user.getId(), arg.substring(5));
+        return chatService.sendMessage(user.getId(), arg);
     }
 }

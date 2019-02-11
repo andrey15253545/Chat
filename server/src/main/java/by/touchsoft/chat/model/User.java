@@ -1,12 +1,15 @@
 package by.touchsoft.chat.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class User {
 
     private String id = UUID.randomUUID().toString().replace("-", "");
@@ -17,8 +20,6 @@ public class User {
         this.name = name;
         this.role = role;
     }
-
-    public User(){}
 
     @Override
     public String toString() {

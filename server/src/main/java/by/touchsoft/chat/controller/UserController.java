@@ -1,11 +1,11 @@
 package by.touchsoft.chat.controller;
 
+import by.touchsoft.chat.dto.UserDTO;
 import by.touchsoft.chat.model.User;
 import by.touchsoft.chat.response.impl.RestResponseImpl;
 import by.touchsoft.chat.services.MessageService;
 import by.touchsoft.chat.services.UserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -87,12 +88,13 @@ public class UserController {
     }
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> Register(
-            @RequestBody User user) {
+    public ResponseEntity<User> Register(
+            @RequestBody @Valid UserDTO userDTO) {
+        User user = new User(userDTO.getName(),userDTO.getRole());
         userService.addLogged(user);
         RestResponseImpl response = context.getBean(RestResponseImpl.class);
         response.setId(user.getId());
         messageService.setResponse(user.getId(),response);
-        return new ResponseEntity<>(user.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

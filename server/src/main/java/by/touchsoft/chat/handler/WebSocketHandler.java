@@ -33,9 +33,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        String id = session.getId();
         User user = new User();
         ResponseDispatcher response = new WebSocketResponseImpl(session);
-        String id = session.getId();
         messageService.setResponse(id,response);
         user.setId(id);
         userService.add(user);
@@ -45,8 +45,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String mess = message.getPayload();
         User user = userService.getById(session.getId());
-        if (mess.charAt(0)!='/')
-            mess = "/msg " + mess;
         Command command = factory.getCommand(mess, user.getRole());
         String result = command != null ? command.execute(user, mess) : String.format(COMMAND_NOT_FOUND, mess);
         session.sendMessage(new TextMessage(result));

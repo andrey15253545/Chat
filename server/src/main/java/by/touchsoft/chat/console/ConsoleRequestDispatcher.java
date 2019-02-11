@@ -48,12 +48,9 @@ public class ConsoleRequestDispatcher extends Thread {
             ResponseDispatcher response = new ConsoleResponseImpl(out);
             messageService.setResponse(user.getId(),response);
             userService.add(user);
-
             String mess;
             do {
                 mess = in.readUTF();
-                if (mess.charAt(0)!='/')
-                    mess = "/msg " + mess;
                 Command command = factory.getCommand(mess, user.getRole());
                 String result = command != null ? command.execute(user, mess) : String.format(COMMAND_NOT_FOUND,mess);
                 out.writeUTF(result);

@@ -5,13 +5,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyBean implements CommandLineRunner {
+public class ConsoleRunner implements CommandLineRunner {
 
     private final ConsoleServer consoleServer;
 
-
     @Autowired
-    public MyBean(ConsoleServer consoleServer) {
+    public ConsoleRunner(ConsoleServer consoleServer) {
         this.consoleServer = consoleServer;
     }
 

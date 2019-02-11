@@ -8,13 +8,13 @@ import by.touchsoft.chat.response.ResponseDispatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class MessageService {
 
-    private final UserDao userDao;
     private final MessageDao messageDao;
 
     public Message generateMessage(User user, String text) {
@@ -22,9 +22,8 @@ public class MessageService {
     }
 
     @Autowired
-    public MessageService(MessageDao messageDao, UserDao userDao) {
+    public MessageService(MessageDao messageDao) {
         this.messageDao = messageDao;
-        this.userDao = userDao;
     }
 
     /**
@@ -43,8 +42,8 @@ public class MessageService {
         messageDao.setResponse(id, dispatcher);
     }
 
-    public String get(String id) {
-        return messageDao.getNew(id).toString();
+    public List<Message> get(String id) {
+        return messageDao.getNew(id);
     }
 
     public List<Message> getAll(String id){
