@@ -1,9 +1,13 @@
 package by.touchsoft.chat.dao;
 
+import by.touchsoft.chat.model.Role;
 import by.touchsoft.chat.model.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+
+import static by.touchsoft.chat.model.Role.AGENT;
+import static by.touchsoft.chat.model.Role.CLIENT;
 
 
 @Repository
@@ -27,29 +31,56 @@ public class UserDao  {
         return freeAgents;
     }
 
-    public List<User> getFreeClients() {
-        return freeClients;
+    public List<User> getFree(Role role) {
+        if (role == Role.AGENT) {
+            return freeAgents;
+        }
+        else if (role == Role.CLIENT) {
+            return freeClients;
+        }
+        else {
+            return null;
+        }
     }
 
     public User getById(String id) {
         return map.get(id);
     }
 
-    public List<User> getAgents() {
-        return agents;
-    }
-
-    public List<User> getClients() {
-        return clients;
+    public List<User> get(Role role) {
+        if (role == AGENT) {
+            return agents;
+        }
+        else if (role == CLIENT){
+            return clients;
+        }
+        return null;
     }
 
     public boolean isFree(User user) {
-        return freeClients.contains(user) || freeAgents.contains(user);
+        return user.getRole() == Role.AGENT ? freeClients.contains(user) : freeAgents.contains(user);
     }
 
     public void addAgent(User user) {
         agents.add(user);
         add(user);
+    }
+
+    public boolean delete(User user) {
+        if (user == null) {
+            return false;
+        }
+        else {
+            if (user.getRole()==AGENT) {
+                freeAgents.remove(user);
+                agents.remove(user);
+            }
+            else if (user.getRole()==CLIENT) {
+                freeClients.remove(user);
+                clients.remove(user);
+            }
+        }
+        return map.remove(user.getId()) != null;
     }
 
     public void addUser(User user){

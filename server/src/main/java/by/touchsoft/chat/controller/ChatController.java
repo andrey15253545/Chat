@@ -1,10 +1,11 @@
 package by.touchsoft.chat.controller;
 
-import by.touchsoft.chat.dto.MessageDTO;
 import by.touchsoft.chat.model.Chat;
-import by.touchsoft.chat.model.Message;
 import by.touchsoft.chat.model.User;
 import by.touchsoft.chat.services.MessageService;
+import by.touchsoft.chat.services.UserService;
+import io.swagger.annotations.ApiResponses;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,18 +21,19 @@ import java.util.List;
 public class ChatController {
 
     private static final String DEFAULT_PAGE_SIZE = "10";
-
+    private static final String DEFAULT_PAGE_NUMBER = "0";
+    private static final Logger logger = Logger.getLogger(ChatController.class);
     private final ChatService chatService;
-    private final MessageService messageService;
+    private final UserService userService;
 
 //    Получить детальную информацию об одном указанном чате
 //    Получить текущие открытые чаты
 //    Покинуть чат
 
     @Autowired
-    public ChatController(ChatService chatService, MessageService messageService) {
+    public ChatController(ChatService chatService, UserService userService) {
         this.chatService = chatService;
-        this.messageService = messageService;
+        this.userService = userService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -39,54 +41,35 @@ public class ChatController {
         return "index";
     }
 
-    @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> sendMessage(
-            @PathVariable("id") String id,
-            @RequestBody MessageDTO messageDTO) {
-        String response = chatService.sendMessage(id, messageDTO.getMessage());
-        HttpStatus status = response.matches(".+ : message send$")
-                ? HttpStatus.OK
-                : HttpStatus.NOT_IMPLEMENTED;
-        return new ResponseEntity<>(response, status);
-    }
-
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public ResponseEntity<List<Chat>> allChats(
-            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "pageNumber", defaultValue = DEFAULT_PAGE_NUMBER) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE) int pageSize) {
         List<Chat> chats = chatService.getAll(pageNumber,pageSize);
         return new ResponseEntity<>(chats, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}/new", method = RequestMethod.GET)
-    public ResponseEntity<List<Message>> getNewMessage(
-            @PathVariable("id") String id) {
-        List<Message> resp = messageService.get(id);
-        return new ResponseEntity<>(resp, HttpStatus.OK);
-    }
-    //TODO : пагинация
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<List<Message>> getAllMessage(
-            @PathVariable("id") String id) {
-        List<Message> response = messageService.getAll(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    //TODO : пагинация
-
-    @RequestMapping(value = "/start", method = RequestMethod.GET)
+    @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> startDialog(
-            @RequestParam(value = "id") String id) {
-        String resp = chatService.create(id);
-        return new ResponseEntity<>(resp, HttpStatus.OK);
+            @PathVariable(value = "id") String id) {
+        User user = userService.getById(id);
+        if (user!=null){
+            String resp = chatService.create(user);
+            return new ResponseEntity<>(resp, HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(value = "/end", method = RequestMethod.GET)
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> endDialog(
-            @RequestParam(value = "id") String id) {
-        String resp = chatService.endDialog(id);
-        return new ResponseEntity<>((resp), HttpStatus.OK);
+            @PathVariable(value = "id") String id) {
+        User user = userService.getById(id);
+        if (user!=null){
+            String resp = chatService.endDialog(user);
+            return new ResponseEntity<>(resp, HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
-
 }

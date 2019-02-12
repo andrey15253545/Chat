@@ -40,11 +40,6 @@ public class ChatService {
         return chatDao.getAll();
     }
 
-    public String create(String id) {
-        User user = userService.getById(id);
-        return create(user);
-    }
-
     public String create(User user){
         if (inChat(user)){
             return IN_CHAT;
@@ -78,11 +73,6 @@ public class ChatService {
         else {
             return "not connect";
         }
-    }
-
-    public String endDialog(String id) {
-        User user = userService.getById(id);
-        return endDialog(user);
     }
 
     public String endDialog(User user) {

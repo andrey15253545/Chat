@@ -51,32 +51,18 @@ public class UserService {
         return user;
     }
 
-    public List<User> getAgents(int pageNumber, int pageSize){
-        List<User> users = userDao.getAgents();
+    public List<User> get(Role role, int pageNumber, int pageSize){
+        List<User> users = userDao.get(role);
         return get(users, pageNumber, pageSize);
     }
 
-    public List<User> getFreeAgents(int pageNumber, int pageSize) {
-        List<User> users = userDao.getFreeAgents();
+    public List<User> getFree(Role role, int pageNumber, int pageSize) {
+        List<User> users = userDao.getFree(role);
         return get(users,pageNumber,pageSize);
     }
 
-    public List<User> getClients(int pageNumber, int pageSize){
-        List<User> users = userDao.getClients();
-        return get(users,pageNumber,pageSize);
-    }
-
-    public int countFreeAgents() {
-        return userDao.getFreeAgents().size();
-    }
-
-    public int countFreeClients() {
-        return userDao.getFreeClients().size();
-    }
-
-    public List<User> getFreeClients(int pageNumber, int pageSize){
-        List<User> users = userDao.getFreeClients();
-        return get(users,pageNumber,pageSize);
+    public int countFree(Role role) {
+        return userDao.getFree(role).size();
     }
 
     private List<User> get(List<User> users, int num, int size) {
@@ -85,6 +71,10 @@ public class UserService {
             responsePage.add(users.get(i));
         }
         return responsePage;
+    }
+
+    public boolean delete(User user ) {
+        return userDao.delete(user);
     }
 
     public User getById(String id){
