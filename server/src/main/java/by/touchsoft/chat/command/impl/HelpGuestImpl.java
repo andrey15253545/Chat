@@ -15,6 +15,7 @@ public class HelpGuestImpl implements Command {
             "Enter \n" +
             "\t\"/a <you name>\" to login as an Agent\n" +
             "\t\"/с <you name>\" to login as a Client\n" +
+            "\t\tthe name must contain only Latin letters\n" +
             "\t\"/exit\" to exit";
 
     @Override

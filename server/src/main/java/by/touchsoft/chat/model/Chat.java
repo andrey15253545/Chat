@@ -13,8 +13,8 @@ public class Chat {
     private String userId;
     private String companionId;
 
-    public Chat(String agentId, String companionId) {
-        this.userId = agentId;
+    public Chat(String userId, String companionId) {
+        this.userId = userId;
         this.companionId = companionId;
     }
 

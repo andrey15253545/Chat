@@ -22,14 +22,6 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public void addFree(User user) {
-        if (user.getRole() == Role.AGENT) {
-            userDao.addFreeAgent(user);
-        } else {
-            userDao.addFreeClient(user);
-        }
-    }
-
     public void add(User user) {
         userDao.addUser(user);
     }
@@ -37,10 +29,6 @@ public class UserService {
     public User addClient(User user) {
         userDao.addClient(user);
         return user;
-    }
-
-    public boolean isFree(User user) {
-        return userDao.isFree(user);
     }
 
     public User addLogged(User user) {
@@ -66,14 +54,6 @@ public class UserService {
         return userDao.getFree(role).size();
     }
 
-    private List<User> get(List<User> users, int num, int size) {
-        List<User> responsePage = new ArrayList<>();
-        for (int i = max(0,num * size); i < min(num * size + size, users.size()); i++) {
-            responsePage.add(users.get(i));
-        }
-        return responsePage;
-    }
-
     public boolean delete(User user ) {
         return userDao.delete(user);
     }
@@ -82,16 +62,11 @@ public class UserService {
         return userDao.getById(id);
     }
 
-    public boolean removeFree(User user){
-        return userDao.removeFree(user);
+    private List<User> get(List<User> users, int num, int size) {
+        List<User> responsePage = new ArrayList<>();
+        for (int i = max(0,num * size); i < min(num * size + size, users.size()); i++) {
+            responsePage.add(users.get(i));
+        }
+        return responsePage;
     }
-
-    public User removeAgent(){
-        return userDao.removeAgent();
-    }
-
-    public User removeClient(){
-        return userDao.removeClient();
-    }
-
 }

@@ -1,5 +1,6 @@
 package by.touchsoft.chat.controller;
 
+import by.touchsoft.chat.dto.MessageDTO;
 import by.touchsoft.chat.model.Chat;
 import by.touchsoft.chat.model.User;
 import by.touchsoft.chat.services.ChatService;
@@ -48,24 +49,24 @@ public class ChatController {
     }
 
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> startDialog(
+    public ResponseEntity<MessageDTO> startDialog(
             @PathVariable(value = "id") String id) {
         User user = userService.getById(id);
         if (user!=null){
             String resp = chatService.create(user);
-            return new ResponseEntity<>(resp, HttpStatus.OK);
+            return new ResponseEntity<>(new MessageDTO(resp), HttpStatus.OK);
         }
         else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> endDialog(
+    public ResponseEntity<MessageDTO> endDialog(
             @PathVariable(value = "id") String id) {
         User user = userService.getById(id);
         if (user!=null){
             String resp = chatService.endDialog(user);
-            return new ResponseEntity<>(resp, HttpStatus.OK);
+            return new ResponseEntity<>(new MessageDTO(resp), HttpStatus.OK);
         }
         else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -29,14 +29,14 @@ public class MessageController {
     }
 
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> sendMessage(
+    public ResponseEntity<MessageDTO> sendMessage(
             @PathVariable("id") String id,
             @RequestBody MessageDTO messageDTO) {
         String response = chatService.sendMessage(id, messageDTO.getMessage());
         HttpStatus status = response.matches(".+ : message send$")
                 ? HttpStatus.OK
                 : HttpStatus.NOT_IMPLEMENTED;
-        return new ResponseEntity<>(response, status);
+        return new ResponseEntity<>(new MessageDTO(response), status);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

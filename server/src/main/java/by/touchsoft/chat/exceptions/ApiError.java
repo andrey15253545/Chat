@@ -25,6 +25,7 @@ public class ApiError {
         this.message = message;
     }
 
+
     void addValidationErrors(List<FieldError> fieldErrors) {
         for (FieldError error : fieldErrors) {
             FieldValidationError subError = new FieldValidationError();

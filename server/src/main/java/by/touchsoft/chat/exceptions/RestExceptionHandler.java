@@ -5,6 +5,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,6 +21,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String ARG_NOT_VALID = "method arg not valid";
     private static final String ARG_TYPE_MISMATCH = "The parameter '%s' of value '%s' could not be converted to type '%s'";
+    private static final String MALFORMED_JSON_REQUEST = "Malformed JSON request";
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -45,6 +48,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "unknown exception");
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ApiError apiError = new ApiError(status, MALFORMED_JSON_REQUEST);
+        return new ResponseEntity(apiError, status);
     }
 
 

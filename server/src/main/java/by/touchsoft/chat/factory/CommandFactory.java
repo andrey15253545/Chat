@@ -42,7 +42,7 @@ public class CommandFactory {
 
         @Override
         public int hashCode() {
-            String firstWord = url.charAt(0)=='/' ? getFirstWord(url) : null;
+            String firstWord = url.startsWith("/") ? getFirstWord(url) : null;
             return firstWord != null ? 31 * firstWord.hashCode() : 0;
         }
     }

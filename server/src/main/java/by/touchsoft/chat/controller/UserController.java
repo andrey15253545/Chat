@@ -49,8 +49,8 @@ public class UserController {
             @PathVariable(value = "role") Role role,
             @RequestParam(value = "pageNumber", defaultValue = DEFAULT_PAGE_NUMBER) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE) int pageSize) {
-        List<User> agents = userService.get(role, pageNumber, pageSize);
-        return new ResponseEntity<>(agents, HttpStatus.OK);
+        List<User> users = userService.get(role, pageNumber, pageSize);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{role}/free", method = RequestMethod.GET)
@@ -58,8 +58,8 @@ public class UserController {
             @PathVariable(value = "role") Role role,
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE) int pageSize) {
-        List<User> agents = userService.getFree(role, pageNumber,pageSize);
-        return new ResponseEntity<>(agents, HttpStatus.OK);
+        List<User> users = userService.getFree(role, pageNumber,pageSize);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{role}/free/count", method = RequestMethod.GET)

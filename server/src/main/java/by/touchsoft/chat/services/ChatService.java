@@ -1,13 +1,18 @@
 package by.touchsoft.chat.services;
 
 import by.touchsoft.chat.dao.ChatDao;
+import by.touchsoft.chat.dao.MessageDao;
+import by.touchsoft.chat.dao.UserDao;
 import by.touchsoft.chat.model.Chat;
 import by.touchsoft.chat.model.Message;
 import by.touchsoft.chat.model.Role;
 import by.touchsoft.chat.model.User;
+import by.touchsoft.chat.response.ResponseDispatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,14 +30,14 @@ public class ChatService {
     private static final String MESSAGE = "%s : %s";
 
     private final ChatDao chatDao;
-    private final MessageService messageService;
-    private final UserService userService;
+    private final MessageDao messageDao;
+    private final UserDao userDao;
 
     @Autowired
-    public ChatService(ChatDao chatDao, MessageService messageService, UserService userService) {
+    public ChatService(ChatDao chatDao, MessageDao messageDao, UserDao userService) {
         this.chatDao = chatDao;
-        this.userService = userService;
-        this.messageService = messageService;
+        this.messageDao = messageDao;
+        this.userDao = userService;
     }
 
     // TODO : realise page
@@ -51,21 +56,20 @@ public class ChatService {
     }
 
     private String createForClient(User client){
-        return createDialog(client, userService.removeAgent());
+        return createDialog(client, userDao.removeAgent());
     }
 
     private String createForAgent(User agent) {
-        return createDialog(agent, userService.removeClient());
+        return createDialog(agent, userDao.removeClient());
     }
 
     private String createDialog(User user, User companion) {
-
         if (companion==null){
-            userService.addFree(user);
+            userDao.addFree(user);
             return WAIT;
         }
-        Message message = messageService.generateMessage(user, String.format(CONNECTED, user.getName()));
-        if (messageService.send(companion.getId(), message)) {
+        Message message = generateMessage(user, String.format(CONNECTED, user.getName()));
+        if (send(companion.getId(), message)) {
             Chat chat = new Chat(user.getId(), companion.getId());
             chatDao.add(chat);
             return String.format(CONNECTED, companion.getName());
@@ -79,26 +83,46 @@ public class ChatService {
         if (user==null) return "error";
         String companionId = chatDao.getCompanionId(user.getId());
         if (companionId==null) {
-            return userService.removeFree(user) ? LEFT_THE_QUEUE : LEFT_THE_CHAT;
+            return userDao.removeFree(user) ? LEFT_THE_QUEUE : LEFT_THE_CHAT;
         }
         chatDao.remove(new Chat(user.getId(), companionId));
-        Message message = messageService.generateMessage(user, String.format(ENDED, user.getName()));
-        messageService.send(companionId, message);
+        Message message = generateMessage(user, String.format(ENDED, user.getName()));
+        send(companionId, message);
         return String.format(ENDED, "you");
     }
 
+    /**
+     *
+     * @param id - index of the user to whom the message is sent
+     * @param message {@link Message} - message to be send
+     * @return true if message send and false if message does't send
+     */
+    private boolean send(String id, Message message) {
+        try {
+            ResponseDispatcher response = messageDao.getResponse(id);
+            response.sendMessage(message);
+            messageDao.add(id,message);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
 
     public String sendMessage(String id, String text) {
         String companionId = chatDao.getCompanionId(id);
         if (companionId == null) {
             return LEFT_THE_CHAT;
         }
-        User user = userService.getById(id);
-        Message message = messageService.generateMessage(user, text);
-        String result = messageService.send(companionId, message)
+        User user = userDao.getById(id);
+        Message message = generateMessage(user, text);
+        String result = send(companionId, message)
                 ? MESSAGE_SEND
                 : MESSAGE_NOT_SEND;
         return String.format(MESSAGE, message, result);
+    }
+
+    private Message generateMessage(User user, String text) {
+        return new Message(user, new Date(), text);
     }
 
     private boolean inChat(User user){
@@ -106,6 +130,6 @@ public class ChatService {
     }
 
     private boolean inQueue(User user){
-        return userService.isFree(user);
+        return userDao.isFree(user);
     }
 }

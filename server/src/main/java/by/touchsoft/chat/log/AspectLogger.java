@@ -15,7 +15,7 @@ public class AspectLogger {
     private static final String COMMAND_EXECUTE = "%s execute command %s, answer - %s";
     private static final String MESSAGE_DOES_NOT_SEND_EXCEPTION = "message does not send";
     private static final String CONTROLLER_REQUEST_PROCESSED = "request \"%s\" processed : %s";
-    private static final String PROCESSED = "request \"%s\" processed : %s";
+    private static final String PROCESSED = "method \"%s\" : %s";
 
     @AfterReturning(value = "execution(String by.touchsoft.chat.command.impl.*.execute(..)) && args(user,arg)", returning = "answer",
             argNames = "point,answer,user,arg" )

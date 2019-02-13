@@ -18,30 +18,9 @@ public class MessageService {
 
     private final MessageDao messageDao;
 
-    public Message generateMessage(User user, String text) {
-        return new Message(user, new  Date(), text);
-    }
-
     @Autowired
     public MessageService(MessageDao messageDao) {
         this.messageDao = messageDao;
-    }
-
-    /**
-     *
-     * @param id - index of the user to whom the message is sent
-     * @param message {@link Message} - message to be send
-     * @return true if message send and false if message does't send
-     */
-    public boolean send(String id, Message message) {
-        try {
-            ResponseDispatcher response = messageDao.getResponse(id);
-            response.sendMessage(message);
-            messageDao.add(id,message);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
     }
 
     public void setResponse(String id, ResponseDispatcher dispatcher) {

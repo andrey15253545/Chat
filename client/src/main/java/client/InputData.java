@@ -25,8 +25,6 @@ class InputData extends Thread {
                 }
             }while (!read.equalsIgnoreCase(EXIT_INPUT_LINE));
         } catch (IOException e) {
-            System.err.print(e);
-            e.printStackTrace();
             System.err.print(ERROR_MESSAGE);
         }
     }

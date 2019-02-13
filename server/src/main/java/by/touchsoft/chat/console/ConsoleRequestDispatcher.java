@@ -3,17 +3,14 @@ package by.touchsoft.chat.console;
 import by.touchsoft.chat.command.Command;
 import by.touchsoft.chat.factory.CommandFactory;
 import by.touchsoft.chat.model.User;
-import by.touchsoft.chat.response.ResponseDispatcher;
 import by.touchsoft.chat.response.impl.ConsoleResponseImpl;
 import by.touchsoft.chat.services.MessageService;
 import by.touchsoft.chat.services.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.RequestDispatcher;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

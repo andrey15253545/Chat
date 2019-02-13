@@ -14,7 +14,6 @@ public class ConsoleServer extends Thread{
 
     private static final String ADDRESS = "127.0.0.2";
     private static final int PORT = 6666;
-
     private final ApplicationContext context;
 
     @Autowired

@@ -8,6 +8,7 @@ import java.util.*;
 
 import static by.touchsoft.chat.model.Role.AGENT;
 import static by.touchsoft.chat.model.Role.CLIENT;
+import static by.touchsoft.chat.model.Role.GUEST;
 
 
 @Repository
@@ -19,19 +20,15 @@ public class UserDao  {
     private List<User> freeAgents = Collections.synchronizedList(new LinkedList<>());
     private List<User> freeClients = Collections.synchronizedList(new LinkedList<>());
 
-    public void addFreeAgent(User user) {
+    private void addFreeAgent(User user) {
         freeAgents.add(user);
     }
 
-    public void addFreeClient(User user) {
+    private void addFreeClient(User user) {
         freeClients.add(user);
     }
 
-    public List<User> getFreeAgents() {
-        return freeAgents;
-    }
-
-    public List<User> getFree(Role role) {
+    public List<User> getFree (Role role){
         if (role == Role.AGENT) {
             return freeAgents;
         }
@@ -39,7 +36,7 @@ public class UserDao  {
             return freeClients;
         }
         else {
-            return null;
+            return new ArrayList<>();
         }
     }
 
@@ -54,16 +51,33 @@ public class UserDao  {
         else if (role == CLIENT){
             return clients;
         }
-        return null;
+        else{
+            List<User> list = new ArrayList<>();
+            for (User user : map.values()){
+                if (user.getRole()==GUEST){
+                    list.add(user);
+                }
+            }
+            return list;
+        }
     }
 
     public boolean isFree(User user) {
-        return user.getRole() == Role.AGENT ? freeClients.contains(user) : freeAgents.contains(user);
+        return user.getRole() == Role.AGENT ? freeAgents.contains(user) : freeClients.contains(user);
     }
 
     public void addAgent(User user) {
         agents.add(user);
         add(user);
+    }
+
+    public void addFree(User user) {
+        if (user.getRole()==AGENT){
+            addFreeAgent(user);
+        }
+        else if (user.getRole()==CLIENT) {
+            addFreeClient(user);
+        }
     }
 
     public boolean delete(User user) {
