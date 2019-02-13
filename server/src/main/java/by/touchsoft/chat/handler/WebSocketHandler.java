@@ -22,20 +22,24 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private final CommandFactory factory;
     private final UserService userService;
     private final MessageService messageService;
+    private final ApplicationContext context;
+
     private static final String COMMAND_NOT_FOUND = "Command '%s' not found";
 
      @Autowired
-     public WebSocketHandler(CommandFactory factory, UserService userService, MessageService messageService) {
+     public WebSocketHandler(ApplicationContext context, CommandFactory factory, UserService userService, MessageService messageService) {
         this.factory = factory;
         this.userService = userService;
         this.messageService = messageService;
-    }
+        this.context = context;
+     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         String id = session.getId();
         User user = new User();
-        ResponseDispatcher response = new WebSocketResponseImpl(session);
+        WebSocketResponseImpl response = context.getBean(WebSocketResponseImpl.class);
+        response.setSession(session);
         messageService.setResponse(id,response);
         user.setId(id);
         userService.add(user);

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 @Service
@@ -67,7 +68,7 @@ public class UserService {
 
     private List<User> get(List<User> users, int num, int size) {
         List<User> responsePage = new ArrayList<>();
-        for (int i = num * size; i < min(num * size + size, users.size()); i++) {
+        for (int i = max(0,num * size); i < min(num * size + size, users.size()); i++) {
             responsePage.add(users.get(i));
         }
         return responsePage;

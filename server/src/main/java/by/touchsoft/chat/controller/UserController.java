@@ -43,18 +43,18 @@ public class UserController {
         this.messageService = messageService;
         this.context = context;
     }
-    @RequestMapping(value = "/{role}", method = RequestMethod.GET)
+    @GetMapping(value = "/{role}")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK", response = ResponseEntity.class)})
-    public ResponseEntity<List<User>> allAgents(
+    public ResponseEntity<List<User>> allUsersByRole(
             @PathVariable(value = "role") Role role,
             @RequestParam(value = "pageNumber", defaultValue = DEFAULT_PAGE_NUMBER) int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE) int pageSize) {
-        List<User> agents = userService.get(role, pageNumber,pageSize);
+        List<User> agents = userService.get(role, pageNumber, pageSize);
         return new ResponseEntity<>(agents, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{role}/free", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> freeAgents(
+    public ResponseEntity<List<User>> freeUsersByRole(
             @PathVariable(value = "role") Role role,
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "pageSize", defaultValue = DEFAULT_PAGE_SIZE) int pageSize) {
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{role}/free/count", method = RequestMethod.GET)
-    public ResponseEntity<Integer> countWaitingClients(
+    public ResponseEntity<Integer> countFreeByRole(
             @PathVariable(value = "role") Role role
     ) {
         int count = userService.countFree(role);
@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<HttpStatus> endDialog(
+    public ResponseEntity<HttpStatus> delete(
             @PathVariable(value = "id") String id) {
         User user = userService.getById(id);
         if (user!=null){

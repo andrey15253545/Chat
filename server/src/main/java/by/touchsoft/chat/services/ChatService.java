@@ -71,7 +71,7 @@ public class ChatService {
             return String.format(CONNECTED, companion.getName());
         }
         else {
-            return "not connect";
+            return create(user);
         }
     }
 

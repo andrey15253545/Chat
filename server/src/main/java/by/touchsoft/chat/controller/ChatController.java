@@ -2,9 +2,8 @@ package by.touchsoft.chat.controller;
 
 import by.touchsoft.chat.model.Chat;
 import by.touchsoft.chat.model.User;
-import by.touchsoft.chat.services.MessageService;
+import by.touchsoft.chat.services.ChatService;
 import by.touchsoft.chat.services.UserService;
-import io.swagger.annotations.ApiResponses;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import by.touchsoft.chat.services.ChatService;
 
 import java.util.List;
 

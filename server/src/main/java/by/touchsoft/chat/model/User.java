@@ -23,11 +23,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "user{" +
-                "id='" + id + '\'' +
-                ", role=" + role +
-                ", name='" + name + '\'' +
-                '}';
+        return String.format("%s %s id \"%s\"",role,name,id);
     }
 
 }

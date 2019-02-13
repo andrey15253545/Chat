@@ -24,8 +24,7 @@ public class RestResponseImpl implements ResponseDispatcher {
     }
 
     @Override
-    public boolean sendMessage(Message message) {
+    public void sendMessage(Message message) {
         messageDao.addNew(id, message);
-        return true;
     }
 }

@@ -16,6 +16,6 @@ public class ConsoleRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        consoleServer.run();
+        consoleServer.start();
     }
 }

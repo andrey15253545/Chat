@@ -9,9 +9,11 @@ import by.touchsoft.chat.services.MessageService;
 import by.touchsoft.chat.services.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.RequestDispatcher;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -29,12 +31,17 @@ public class ConsoleRequestDispatcher extends Thread {
     private final CommandFactory factory;
     private final MessageService messageService;
     private final UserService userService;
+    private final ConsoleResponseImpl response;
 
     @Autowired
-    public ConsoleRequestDispatcher(CommandFactory factory, MessageService messageService, UserService userService) {
+    public ConsoleRequestDispatcher(CommandFactory factory,
+                                    MessageService messageService,
+                                    UserService userService,
+                                    ConsoleResponseImpl response) {
         this.factory = factory;
         this.messageService = messageService;
         this.userService = userService;
+        this.response = response;
     }
 
     public void setSocket(Socket socket) {
@@ -45,7 +52,7 @@ public class ConsoleRequestDispatcher extends Thread {
         User user = new User();
         try (DataOutputStream out = new DataOutputStream(socket.getOutputStream());
              DataInputStream in = new DataInputStream(socket.getInputStream())) {
-            ResponseDispatcher response = new ConsoleResponseImpl(out);
+            response.setOut(out);
             messageService.setResponse(user.getId(),response);
             userService.add(user);
             String mess;

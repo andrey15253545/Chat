@@ -8,6 +8,7 @@ import by.touchsoft.chat.response.ResponseDispatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,9 +34,14 @@ public class MessageService {
      * @return true if message send and false if message does't send
      */
     public boolean send(String id, Message message) {
-        messageDao.add(id,message);
-        ResponseDispatcher response = messageDao.getResponse(id);
-        return response.sendMessage(message);
+        try {
+            ResponseDispatcher response = messageDao.getResponse(id);
+            response.sendMessage(message);
+            messageDao.add(id,message);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     public void setResponse(String id, ResponseDispatcher dispatcher) {

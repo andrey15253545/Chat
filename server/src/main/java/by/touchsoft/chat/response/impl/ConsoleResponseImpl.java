@@ -2,27 +2,23 @@ package by.touchsoft.chat.response.impl;
 
 import by.touchsoft.chat.model.Message;
 import by.touchsoft.chat.response.ResponseDispatcher;
+import lombok.Setter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.DataOutputStream;
+import java.io.IOError;
 import java.io.IOException;
 
+@Component
+@Scope("prototype")
+@Setter
+public class ConsoleResponseImpl implements ResponseDispatcher {
 
-public class ConsoleResponseImpl implements ResponseDispatcher{
-
-    private final DataOutputStream out;
-
-    public ConsoleResponseImpl(DataOutputStream out) {
-        this.out = out;
-    }
+    private DataOutputStream out;
 
     @Override
-    public boolean sendMessage(Message message) {
-        try {
-            out.writeUTF(message.toString());
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public void sendMessage(Message message) throws IOException{
+        out.writeUTF(message.toString());
     }
 }

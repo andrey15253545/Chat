@@ -2,6 +2,8 @@ package by.touchsoft.chat.response;
 
 import by.touchsoft.chat.model.Message;
 
+import java.io.IOException;
+
 public interface ResponseDispatcher {
-    boolean sendMessage(Message message);
+    void sendMessage(Message message) throws IOException;
 }

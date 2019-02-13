@@ -12,7 +12,6 @@ import java.net.Socket;
 @Component
 public class ConsoleServer extends Thread{
 
-//    private static final Logger log = Logger.ge(String.valueOf(ConsoleServer.class));
     private static final String ADDRESS = "127.0.0.2";
     private static final int PORT = 6666;
 
@@ -34,7 +33,7 @@ public class ConsoleServer extends Thread{
                 requestDispatcher.start();
             }
         } catch (IOException e) {
-//            log.error(e);
+            this.start();
         }
     }
 }
