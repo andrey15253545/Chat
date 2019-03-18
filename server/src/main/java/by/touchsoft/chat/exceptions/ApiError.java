@@ -47,7 +47,7 @@ public class ApiError {
     @Override
     public String toString() {
         return "status " + status +
-                ",\nmessage " + message +
+                ",\ntext " + message +
                 " :\n "+ fieldValidationErrors.toString();
     }
 }

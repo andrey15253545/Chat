@@ -6,6 +6,8 @@ import by.touchsoft.chat.model.Role;
 import by.touchsoft.chat.model.User;
 import org.springframework.stereotype.Component;
 
+import java.util.Vector;
+
 @Component
 @Key(url = "/exit", role = Role.GUEST)
 public class ExitGuestImpl implements Command {

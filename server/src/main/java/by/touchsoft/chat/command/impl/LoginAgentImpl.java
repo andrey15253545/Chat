@@ -14,7 +14,7 @@ public class LoginAgentImpl implements Command {
 
     private final UserService userService;
 
-    private static final String MESSAGE = "you logged as an agent %s";
+    private static final String MESSAGE = "You logged as an agent %s";
 
     @Autowired
     public LoginAgentImpl(UserService userService) {

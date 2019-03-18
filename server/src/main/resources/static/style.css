@@ -1,0 +1,192 @@
+.chat {
+  height: 300px;
+  width: 200px;
+  background: rgb(240, 250, 240);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  position: absolute;
+}
+
+.chatHead {
+  height: 10%;
+  width: 100%;
+  background: rgb(150, 230, 130);
+  cursor: move;
+}
+
+.menu {
+  position: absolute;
+  top: 3%;
+  left: 5%;
+  background: rgb(240, 250, 240);
+  height: 4%;
+  width: 12%;
+}
+
+.chatBody {
+  z-index: 1;
+  background: rgb(240, 250, 240);
+  overflow: auto;
+  position: relative;
+  height: 76%;
+  width: 100%;
+}
+
+.right {
+  left: 20%;
+  background: rgb(255, 255, 255);
+}
+
+.left {
+  left:3%;
+  background: rgb(220, 250, 220);
+}
+
+.t {
+  z-index: 2;
+  border: 1px solid rgb(220, 220, 220);
+  padding: 4px 4px 4px 8px;
+  margin: 3px 0px 3px 0px;
+  resize: none;
+  border-radius: 10px;
+  outline: none;
+  position: relative;
+  max-width: 70%;
+}
+
+.input {
+  height: 14%;
+  width: 100%;
+  position: absolute;
+  background: rgb(240, 250, 240);
+  bottom: 0;
+  float: left;
+  overflow: hidden;
+  outline: none;
+}
+
+.inp {
+  padding-left: 10px;
+  background: rgb(200, 250, 200);
+  border-radius: 7px;
+  white-space: pre-wrap;
+  display: inline-block;
+}
+
+.button {
+  border: 1px solid rgb(220, 220, 220);
+  font-family: arial,sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  color: rgb(68, 68, 68);
+  text-decoration: none;
+  text-align: center;
+  padding-top: 1em;
+  user-select: none;
+  height: 100%;
+  width: 100%;
+  background: rgb(200, 250, 200);
+  transition: all 0.218s ease 0s;
+}
+
+.button:hover {
+  color: rgb(24, 24, 24);
+  background: rgb(200, 250, 200);
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.button:active {
+  color: rgb(51, 51, 51);
+  background: rgb(200, 250, 200);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1) inset;
+}
+
+
+
+.minimize {
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  height: 2%;
+  width: 9%;
+  position: absolute;
+  top: 4%;
+  left: 85%;
+  background: rgb(200, 250, 200);
+  cursor: pointer;
+}
+
+.regField {
+  position: absolute;
+  top: 50%;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+#table {
+  width: 100%;
+  height: 100%;
+}
+
+#tr {
+  width: 50%;
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+.textArea {
+  margin: 2px;
+  height: 77%;
+  width: 95%;
+  resize: none;
+  bottom: 0;
+  outline: none;
+}
+
+.mainMenu {
+  border: none;
+  cursor: pointer;
+  margin: 3px 0 10px 10px;
+}
+
+.dropDown {
+  z-index: 3;
+  position: relative;
+  display: inline-block;
+}
+
+.dropDownChild {
+  z-index: 4;
+  display: none;
+  background: rgb(150, 230, 150);
+  width: 100px;
+}
+
+.dropDownChild .button {
+  padding: 5px;
+  cursor: pointer;
+  color: black;
+}
+
+.dropDownChild .button:hover {
+  background: rgb(150, 240, 150);
+}
+
+.dropDown:hover .dropDownChild {
+  z-index: 4;
+  display: block;
+}

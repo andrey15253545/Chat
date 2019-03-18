@@ -19,7 +19,9 @@ public class WebSocketResponseImpl implements ResponseDispatcher {
 
     @Override
     public void sendMessage(Message message) throws IOException {
-        session.sendMessage(new TextMessage(message.toString()));
+//        byte[] data = SerializationUtils.serialize(text);
+//        session.sendMessage(new BinaryMessage(data != null ? data : new byte[0]));
+        session.sendMessage(new TextMessage(message.getText()));
     }
 }
 

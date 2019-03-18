@@ -1,5 +1,6 @@
 package by.touchsoft.chat.controller;
 
+import by.touchsoft.chat.dto.MessageDTO;
 import by.touchsoft.chat.dto.UserDTO;
 import by.touchsoft.chat.model.Role;
 import by.touchsoft.chat.model.User;
@@ -71,13 +72,13 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<HttpStatus> delete(
+    public ResponseEntity<MessageDTO> delete(
             @PathVariable(value = "id") String id) {
         User user = userService.getById(id);
         if (user!=null){
             chatService.endDialog(user);
             userService.delete(user);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(new MessageDTO("exited"), HttpStatus.OK);
         }
         else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -90,7 +91,10 @@ public class UserController {
         userService.addLogged(user);
         RestResponseImpl response = context.getBean(RestResponseImpl.class);
         response.setId(user.getId());
-        messageService.setResponse(user.getId(),response);
+        chatService.setResponse(user.getId(),response);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
+
+
+
 }

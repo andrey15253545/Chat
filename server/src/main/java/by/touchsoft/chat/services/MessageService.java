@@ -23,17 +23,12 @@ public class MessageService {
         this.messageDao = messageDao;
     }
 
-    public void setResponse(String id, ResponseDispatcher dispatcher) {
-        messageDao.setResponse(id, dispatcher);
+    public void addNew(String id, Message message){
+        messageDao.addNew(id,message);
     }
 
     public List<Message> get(String id) {
         return messageDao.getNew(id);
     }
-
-    public List<Message> getAll(String id){
-        return messageDao.getAll(id);
-    }
-
 
 }

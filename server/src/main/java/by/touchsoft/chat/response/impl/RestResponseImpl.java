@@ -1,8 +1,8 @@
 package by.touchsoft.chat.response.impl;
 
-import by.touchsoft.chat.dao.MessageDao;
 import by.touchsoft.chat.model.Message;
 import by.touchsoft.chat.response.ResponseDispatcher;
+import by.touchsoft.chat.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class RestResponseImpl implements ResponseDispatcher {
 
-    private final MessageDao messageDao;
+    private final MessageService messageDao;
     private String id;
 
     @Autowired
-    public RestResponseImpl(MessageDao messageDao) {
+    public RestResponseImpl(MessageService messageDao) {
         this.messageDao = messageDao;
     }
 

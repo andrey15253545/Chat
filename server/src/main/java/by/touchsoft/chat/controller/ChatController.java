@@ -2,6 +2,7 @@ package by.touchsoft.chat.controller;
 
 import by.touchsoft.chat.dto.MessageDTO;
 import by.touchsoft.chat.model.Chat;
+import by.touchsoft.chat.model.Message;
 import by.touchsoft.chat.model.User;
 import by.touchsoft.chat.services.ChatService;
 import by.touchsoft.chat.services.UserService;
@@ -11,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -21,23 +24,15 @@ public class ChatController {
 
     private static final String DEFAULT_PAGE_SIZE = "10";
     private static final String DEFAULT_PAGE_NUMBER = "0";
-    private static final Logger logger = Logger.getLogger(ChatController.class);
     private final ChatService chatService;
     private final UserService userService;
 
 //    Получить детальную информацию об одном указанном чате
-//    Получить текущие открытые чаты
-//    Покинуть чат
 
     @Autowired
     public ChatController(ChatService chatService, UserService userService) {
         this.chatService = chatService;
         this.userService = userService;
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public String chat(){
-        return "index";
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -71,4 +66,16 @@ public class ChatController {
         else
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<List<Message>> info(
+            @PathVariable(value = "id") String id) {
+        List<Message> list = chatService.getByChatId(id);
+        if (list!=null){
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 }

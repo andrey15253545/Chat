@@ -49,8 +49,6 @@ public class CommandFactory {
 
     private Map<Key, Command> commands = new HashMap<>();
 
-
-    //TODO : check key
     @Autowired
     public CommandFactory(ApplicationContext appContext) {
         Reflections reflections = new Reflections("by.touchsoft.chat.command.impl");

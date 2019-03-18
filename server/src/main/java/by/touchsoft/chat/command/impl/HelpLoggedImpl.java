@@ -14,7 +14,7 @@ public class HelpLoggedImpl implements Command{
     private static final String HELP =
             "Enter \n" +
                     "\t\"/s\" to find companion \n" +
-                    "\t\"<your message>\" to send a message to a companion \n"+
+                    "\t\"<your text>\" to send a text to a companion \n"+
                     "\t\"/end\" to leave the chat\n" +
                     "\t\"/logout\" to logout\n" +
                     "\t\"/exit\" to exit\n";

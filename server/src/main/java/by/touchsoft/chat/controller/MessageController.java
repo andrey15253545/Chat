@@ -42,8 +42,10 @@ public class MessageController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<List<Message>> getAllMessage(
             @PathVariable("id") String id) {
-        List<Message> response = messageService.getAll(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        List<Message> response = chatService.chatStories(id);
+        return response != null
+                ? new ResponseEntity<>(response, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     //TODO : пагинация
 

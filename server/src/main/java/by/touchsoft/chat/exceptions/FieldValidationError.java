@@ -21,7 +21,7 @@ public class FieldValidationError {
         return "{\nobject " + object +
                 ",\nfield " + field +
                 ",\nrejectedValue " + rejectedValue +
-                ",\nmessage " + message +
+                ",\ntext " + message +
                 "\n}";
     }
 }

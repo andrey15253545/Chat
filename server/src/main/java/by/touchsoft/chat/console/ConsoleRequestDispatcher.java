@@ -4,7 +4,7 @@ import by.touchsoft.chat.command.Command;
 import by.touchsoft.chat.factory.CommandFactory;
 import by.touchsoft.chat.model.User;
 import by.touchsoft.chat.response.impl.ConsoleResponseImpl;
-import by.touchsoft.chat.services.MessageService;
+import by.touchsoft.chat.services.ChatService;
 import by.touchsoft.chat.services.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +26,17 @@ public class ConsoleRequestDispatcher extends Thread {
     private Socket socket;
 
     private final CommandFactory factory;
-    private final MessageService messageService;
+    private final ChatService chatService;
     private final UserService userService;
     private final ConsoleResponseImpl response;
 
     @Autowired
     public ConsoleRequestDispatcher(CommandFactory factory,
-                                    MessageService messageService,
+                                    ChatService chatService,
                                     UserService userService,
                                     ConsoleResponseImpl response) {
         this.factory = factory;
-        this.messageService = messageService;
+        this.chatService = chatService;
         this.userService = userService;
         this.response = response;
     }
@@ -50,7 +50,7 @@ public class ConsoleRequestDispatcher extends Thread {
         try (DataOutputStream out = new DataOutputStream(socket.getOutputStream());
              DataInputStream in = new DataInputStream(socket.getInputStream())) {
             response.setOut(out);
-            messageService.setResponse(user.getId(),response);
+            chatService.setResponse(user.getId(),response);
             userService.add(user);
             String mess;
             do {

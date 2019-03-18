@@ -31,6 +31,18 @@ public class UserService {
         return user;
     }
 
+    public void addFree(User user){
+        userDao.addFree(user);
+    }
+
+    public boolean isFree(User user){
+        return userDao.isFree(user);
+    }
+
+    public boolean removeFree(User user) {
+        return userDao.removeFree(user);
+    }
+
     public User addLogged(User user) {
         return user.getRole()== Role.AGENT ? addAgent(user) : addClient(user);
     }
@@ -38,6 +50,14 @@ public class UserService {
     public User addAgent(User user) {
         userDao.addAgent(user);
         return user;
+    }
+
+    public User removeAgent() {
+        return userDao.removeAgent();
+    }
+
+    public User removeClient() {
+        return userDao.removeClient();
     }
 
     public List<User> get(Role role, int pageNumber, int pageSize){
